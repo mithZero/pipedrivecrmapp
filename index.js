@@ -28,7 +28,6 @@ app.listen(PORT, () => {
 });
 
 app.get("/", async (req, res) => {
-	res.send("Hello, world!");
 	if (
 		req.session.accessToken !== null &&
 		req.session.accessToken !== undefined
