@@ -11,7 +11,7 @@ app.use(
 		keys: ["key1"],
 	})
 );
-const PORT = 1800;
+const PORT = process.env.PORT || 3000;
 
 const pipedrive = require("pipedrive");
 
