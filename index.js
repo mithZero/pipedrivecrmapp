@@ -14,7 +14,6 @@ const PORT = 1800;
 const pipedrive = require('pipedrive');
 
 const apiClient = new pipedrive.ApiClient();
-console.log(process.env)
 
 // Configuration parameters and credentials
 let oauth2 = apiClient.authentications.oauth2;
