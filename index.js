@@ -40,7 +40,7 @@ oauth2.redirectUri = process.env.REDIRECT_URI; // OAuth 2 Redirection endpoint o
 
 
 app.listen(PORT, () => {
-	console.log(`Listening on port ${PORT}`);
+	console.log(`Listening on port ${PORT}, on host ${process.env.HOST}`);
 });
 
 app.get("/", async (req, res) => {
