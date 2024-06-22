@@ -57,7 +57,7 @@ app.get("/", async (req, res) => {
 		res.send(deals);
 	} else {
 		const authUrl = apiClient.buildAuthorizationUrl();
-
+		console.log(authUrl);
 		res.redirect(authUrl);
 	}
 });
@@ -76,6 +76,7 @@ app.get("/callback", (req, res) => {
 			res.redirect("/");
 		},
 		(exception) => {
+			throw new Error(exception);
 			// error occurred, exception will be of type src/exceptions/OAuthProviderException
 		}
 	);
