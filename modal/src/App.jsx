@@ -9,12 +9,10 @@ import AppExtensionsSDK, {
 function App() {
   (async function() {
     console.log('woyay')
-    const sdk = new AppExtensionsSDK({
-      identifier: "21c812a2-5e19-4b58-8fbf-25e86818e16a"
-    })
+    const sdk = new AppExtensionsSDK()
     
     console.log(sdk)
-    sdk.initialize({ size: { height: 500 , width: 400} })
+    await sdk.initialize()
     console.log('wowow')
 
     // sdk.listen(Event.VISIBILITY, ({ error, data }) => {
