@@ -44,6 +44,8 @@ app.listen(PORT, () => {
 });
 
 app.get("/", async (req, res) => {
+	console.log(apiClient.buildAuthorizationUrl());
+	console.log("wtf")
 	if (
 		req.session.accessToken !== null &&
 		req.session.accessToken !== undefined
@@ -57,7 +59,6 @@ app.get("/", async (req, res) => {
 		res.send(deals);
 	} else {
 		const authUrl = apiClient.buildAuthorizationUrl();
-		console.log(authUrl);
 		res.redirect(authUrl);
 	}
 });
