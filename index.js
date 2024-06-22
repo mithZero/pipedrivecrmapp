@@ -21,13 +21,13 @@ const PORT = process.env.PORT || 3000;
 
 // app.use(express.static(path.join(__dirname, 'public'), options))
 
-// app.use(cookieParser());
-// app.use(
-// 	cookieSession({
-// 		name: "session",
-// 		keys: ["key1"],
-// 	})
-// );
+app.use(cookieParser());
+app.use(
+	cookieSession({
+		name: "session",
+		keys: ["key1"],
+	})
+);
 
 const pipedrive = require("pipedrive");
 const apiClient = new pipedrive.ApiClient();
