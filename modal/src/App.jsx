@@ -9,11 +9,13 @@ import AppExtensionsSDK, {
 function App() {
   (async function() {
     console.log('woyay')
-    const sdk = await new AppExtensionsSDK({
+    const sdk = new AppExtensionsSDK({
       identifier: "21c812a2-5e19-4b58-8fbf-25e86818e16a"
-    }).initialize({ size: { height: 500 , width: 400} }).then((data => console.log(data)), (data) => console.log(data))
-
+    })
+    
     console.log(sdk)
+    sdk.initialize({ size: { height: 500 , width: 400} }).then((data => console.log(data)), (data) => console.log(data))
+    console.log('wowow')
 
     sdk.listen(Event.VISIBILITY, ({ error, data }) => {
       console.log(error, data)
