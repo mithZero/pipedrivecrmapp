@@ -17,9 +17,9 @@ function App() {
     sdk.initialize({ size: { height: 500 , width: 400} }).then((data => console.log(data)), (data) => console.log(data))
     console.log('wowow')
 
-    sdk.listen(Event.VISIBILITY, ({ error, data }) => {
-      console.log(error, data)
-    });
+    // sdk.listen(Event.VISIBILITY, ({ error, data }) => {
+    //   console.log(error, data)
+    // });
 
     try {
       const { status } = await sdk.execute(Command.OPEN_MODAL, {
