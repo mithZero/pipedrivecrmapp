@@ -8,6 +8,7 @@ import AppExtensionsSDK, {
 
 function App() {
   (async function() {
+    console.log('woyay')
     const sdk = new AppExtensionsSDK({
       identifier: "21c812a2-5e19-4b58-8fbf-25e86818e16a",
     });
