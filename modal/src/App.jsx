@@ -14,7 +14,7 @@ function App() {
     })
     
     console.log(sdk)
-    sdk.initialize({ size: { height: 500 , width: 400} }).then((data => console.log(data)), (data) => console.log(data))
+    sdk.initialize({ size: { height: 500 , width: 400} })
     console.log('wowow')
 
     // sdk.listen(Event.VISIBILITY, ({ error, data }) => {
