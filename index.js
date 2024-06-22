@@ -31,6 +31,11 @@ app.use(
 
 const pipedrive = require("pipedrive");
 const apiClient = new pipedrive.ApiClient();
+apiClient.authentications.oauth2.tokenUpdateCallback = function(token) {
+    // getting the updated token
+    // here the token is an object, you can store the whole object or extract fields into separate values
+    req.session.token = token;
+}
 
 // Configuration parameters and credentials
 let oauth2 = apiClient.authentications.oauth2;
