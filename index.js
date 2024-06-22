@@ -59,6 +59,7 @@ app.get("/", async (req, res) => {
 		res.send(deals);
 	} else {
 		const authUrl = apiClient.buildAuthorizationUrl();
+		console.log(authUrl)
 		res.redirect(authUrl);
 	}
 });
