@@ -2,7 +2,25 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
+const path = require('path')
+const pipedrive = require("pipedrive");
 require("dotenv").config();
+
+const PORT = process.env.PORT || 3000;
+
+const options = {
+	dotfiles: 'ignore',
+  etag: false,
+  extensions: ['htm', 'html'],
+  index: false,
+  maxAge: '1d',
+  redirect: false,
+  setHeaders (res, path, stat) {
+		res.set('x-timestamp', Date.now())
+  }
+}
+
+app.use(express.static(path.join(__dirname, 'public'), options))
 
 app.use(cookieParser());
 app.use(
@@ -11,9 +29,6 @@ app.use(
 		keys: ["key1"],
 	})
 );
-const PORT = process.env.PORT || 3000;
-
-const pipedrive = require("pipedrive");
 
 const apiClient = new pipedrive.ApiClient();
 
@@ -44,6 +59,10 @@ app.get("/", async (req, res) => {
 
 		res.redirect(authUrl);
 	}
+});
+
+app.get("/iframe", (_, res) => {
+	res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.get("/callback", (req, res) => {
