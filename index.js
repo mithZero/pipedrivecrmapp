@@ -31,7 +31,6 @@ app.use(
 
 const pipedrive = require("pipedrive");
 const apiClient = new pipedrive.ApiClient();
-apiClient.refreshToken();
 
 // Configuration parameters and credentials
 let oauth2 = apiClient.authentications.oauth2;
