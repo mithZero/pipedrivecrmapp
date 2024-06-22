@@ -33,8 +33,23 @@ app.listen(PORT, () => {
 });
 
 app.get("/", async (req, res) => {
-	const authUrl = apiClient.buildAuthorizationUrl();
-	res.redirect(authUrl);
+	if (
+		req.session.accessToken !== null &&
+		req.session.accessToken !== undefined &&
+		req.session.refreshToken !== undefined
+	) {
+		// token is already set in the session
+		// now make API calls as required
+		// client will automatically refresh the token when it expires and call the token update callback
+		const api = new pipedrive.DealsApi(apiClient);
+		const deals = await api.getDeals();
+
+		res.send(deals);
+	} else {
+		const authUrl = apiClient.buildAuthorizationUrl();
+
+		res.redirect(authUrl);
+	}
 });
 
 app.get("/iframe", (_, res) => {
