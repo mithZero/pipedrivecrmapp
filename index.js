@@ -1,7 +1,15 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 require("dotenv").config();
+
+app.use(cookieParser());
+app.use(cookieSession({
+    name: 'session',
+    keys: ['key1']
+}));
 
 const PORT = process.env.PORT || 3000;
 
@@ -41,6 +49,16 @@ app.get("/", async (req, res) => {
 		// token is already set in the session
 		// now make API calls as required
 		// client will automatically refresh the token when it expires and call the token update callback
+		const refreshPromise = apiClient.refreshToken();
+		refreshPromise.then(
+			() => {
+				console.log("token has been refreshed")
+			},
+			(exception) => {
+				throw new Error(exception);
+				// error occurred, exception will be of type src/exceptions/OAuthProviderException
+			}
+		);
 		const api = new pipedrive.DealsApi(apiClient);
 		const deals = await api.getDeals();
 
