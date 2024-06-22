@@ -44,6 +44,7 @@ app.listen(PORT, () => {
 });
 
 app.get("/", async (req, res) => {
+	apiClient.authentications.oauth2.accessToken = req.session.accessToken;
 	if (
 		req.session.accessToken !== null &&
 		req.session.accessToken !== undefined
