@@ -50,16 +50,18 @@ app.get("/", async (req, res) => {
 		req.session.accessToken !== null &&
 		req.session.accessToken !== undefined
 	) {
+		console.log("heee")
 		// token is already set in the session
 		// now make API calls as required
 		// client will automatically refresh the token when it expires and call the token update callback
 		const api = new pipedrive.DealsApi(apiClient);
 		const deals = await api.getDeals();
+		console.log("wohjv")
 		console.log(deals);
 		res.send(deals);
 	} else {
 		const authUrl = apiClient.buildAuthorizationUrl();
-		console.log(authUrl)
+		console.log("auth url ", authUrl)
 		res.redirect(authUrl);
 	}
 });
