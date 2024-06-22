@@ -11,7 +11,7 @@ function App() {
     console.log('woyay')
     const sdk = await  new AppExtensionsSDK({
       identifier: "21c812a2-5e19-4b58-8fbf-25e86818e16a",
-    }).initialize({ size: { height: 500 } })
+    }).initialize({ size: { height: 500 , width: 400} })
 
     console.log(sdk)
 
