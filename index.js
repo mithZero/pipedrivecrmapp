@@ -7,27 +7,27 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
 
-const options = {
-	dotfiles: 'ignore',
-  etag: false,
-  extensions: ['htm', 'html'],
-  index: false,
-  maxAge: '1d',
-  redirect: false,
-  setHeaders (res, path, stat) {
-		res.set('x-timestamp', Date.now())
-  }
-}
+// const options = {
+// 	dotfiles: 'ignore',
+//   etag: false,
+//   extensions: ['htm', 'html'],
+//   index: false,
+//   maxAge: '1d',
+//   redirect: false,
+//   setHeaders (res, path, stat) {
+// 		res.set('x-timestamp', Date.now())
+//   }
+// }
 
-app.use(express.static(path.join(__dirname, 'public'), options))
+// app.use(express.static(path.join(__dirname, 'public'), options))
 
-app.use(cookieParser());
-app.use(
-	cookieSession({
-		name: "session",
-		keys: ["key1"],
-	})
-);
+// app.use(cookieParser());
+// app.use(
+// 	cookieSession({
+// 		name: "session",
+// 		keys: ["key1"],
+// 	})
+// );
 
 const pipedrive = require("pipedrive");
 const apiClient = new pipedrive.ApiClient();
@@ -62,9 +62,9 @@ app.get("/", async (req, res) => {
 	}
 });
 
-app.get("/iframe", (_, res) => {
-	res.sendFile(path.join(__dirname, 'public/index.html'));
-});
+// app.get("/iframe", (_, res) => {
+// 	res.sendFile(path.join(__dirname, 'public/index.html'));
+// });
 
 app.get("/callback", (req, res) => {
 	const authCode = req.query.code;
