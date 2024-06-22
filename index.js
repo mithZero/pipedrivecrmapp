@@ -3,7 +3,6 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const path = require('path')
-const pipedrive = require("pipedrive");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 3000;
@@ -30,6 +29,8 @@ app.use(
 	})
 );
 
+const pipedrive = require("pipedrive");
+apiClient.refreshToken();
 const apiClient = new pipedrive.ApiClient();
 
 // Configuration parameters and credentials
@@ -37,6 +38,7 @@ let oauth2 = apiClient.authentications.oauth2;
 oauth2.clientId = process.env.CLIENT_ID; // OAuth 2 Client ID
 oauth2.clientSecret = process.env.CLIENT_SECRET; // OAuth 2 Client Secret
 oauth2.redirectUri = process.env.REDIRECT_URI; // OAuth 2 Redirection endpoint or Callback Uri
+
 
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`);
