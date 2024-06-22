@@ -25,7 +25,7 @@ const options = {
 	},
 };
 
-app.use(express.static(path.join(__dirname, "public"), options));
+app.use(express.static(path.join(__dirname, "modal/dist"), options));
 
 const pipedrive = require("pipedrive");
 const apiClient = new pipedrive.ApiClient();
@@ -71,7 +71,7 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/iframe", (_, res) => {
-	res.sendFile(path.join(__dirname, "public/index.html"));
+	res.sendFile(path.join(__dirname, "modal/dist/index.html"));
 });
 
 app.get("/callback", (req, res) => {
