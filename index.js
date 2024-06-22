@@ -55,7 +55,7 @@ app.get("/", async (req, res) => {
 		// client will automatically refresh the token when it expires and call the token update callback
 		const api = new pipedrive.DealsApi(apiClient);
 		const deals = await api.getDeals();
-
+		console.log(deals);
 		res.send(deals);
 	} else {
 		const authUrl = apiClient.buildAuthorizationUrl();
