@@ -9,8 +9,9 @@ import AppExtensionsSDK, {
 function App() {
   (async function() {
     console.log('woyay')
-    const sdk = await  new AppExtensionsSDK({
+    const sdk = await new AppExtensionsSDK({
       identifier: "21c812a2-5e19-4b58-8fbf-25e86818e16a",
+      targetWindow: window
     }).initialize({ size: { height: 500 , width: 400} })
 
     console.log(sdk)
