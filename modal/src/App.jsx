@@ -1,20 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
-import AppExtensionsSDK from "@pipedrive/app-extensions-sdk";
+import AppExtensionsSDK, {Command} from "@pipedrive/app-extensions-sdk";
 import { useForm } from "react-hook-form";
 
 function App() {
+  const [sdk, setSDK] = useState()
 	useEffect(() => {
     console.log(window.location.search);
 		(async () => {
-			const sdk = new AppExtensionsSDK();
+			setSDK(new AppExtensionsSDK())
 
 			await sdk.initialize({ size: { height: 300, width: 800 } });
 		})();
-	}, []);
+	}, [sdk]);
 
 	const { register, handleSubmit, formState } = useForm();
-	const onSubmit = (data) => alert(JSON.stringify(data));
+	const onSubmit = (data) => {
+    console.log(data)
+    fetch("https://pipedrivecrmapp-production.up.railway.app/name");
+
+    (async () => {
+      await sdk.execute(Command.CLOSE_MODAL);
+    })();
+  }
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

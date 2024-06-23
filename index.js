@@ -70,6 +70,40 @@ app.get("/", async (req, res) => {
 	}
 });
 
+app.get("/name", () => {
+	(async () => {
+
+		const defaultClient = new pipedrive.ApiClient();
+		
+		// Configure authorization by settings api key
+		// PIPEDRIVE_API_KEY is an environment variable that holds real api key
+		defaultClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
+		
+		try {
+			console.log('Sending request...');
+			
+			const DEAL_ID = 1; // An ID of Deal which will be updated
+			const fieldsApi = new pipedrive.DealFieldsApi(defaultClient);
+			const dealsApi = new pipedrive.DealsApi(defaultClient);
+			
+			// Get all Deal fields (keep in mind pagination)
+			const dealFields = await fieldsApi.getDealFields();
+			// Find a field you would like to set a new value to on a Deal
+			const nameField = dealFields.data.find(field => field.name === "name");
+
+			const updatedDeal = await dealsApi.updateDeal(DEAL_ID, {
+				[nameField.key]: 'Joker'
+			});
+
+			console.log('The value of the custom field was updated successfully!', updatedDeal);
+		} catch (err) {
+			const errorToLog = err.context?.body || err;
+			
+			console.log('Updating failed', errorToLog);
+		}
+	})()
+})
+
 app.get("/yoyo", (_, res) => {
 	res.sendFile(path.join(__dirname, "public/index.html"));
 })
