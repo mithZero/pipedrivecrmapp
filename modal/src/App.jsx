@@ -13,11 +13,11 @@ function App() {
     
     console.log(sdk)
     await sdk.initialize()
-    console.log('wowow')
+    console.log(sdk)
 
-    // sdk.listen(Event.VISIBILITY, ({ error, data }) => {
-    //   console.log(error, data)
-    // });
+    sdk.listen(Event.VISIBILITY, ({ error, data }) => {
+      console.log(error, data)
+    });
 
     try {
       const { status } = await sdk.execute(Command.OPEN_MODAL, {
