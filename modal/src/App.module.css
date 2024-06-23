@@ -1,0 +1,25 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  gap: 10px;
+}
+
+.group {
+
+}
+
+.group > * {
+  display: block;
+  margin: 4px;
+}
+
+.group legend {
+  display: block; 
+}

@@ -1,9 +1,7 @@
 import { useEffect } from "react";
-import "./App.css";
-import AppExtensionsSDK, {
-	Command,
-	Modal,
-} from "@pipedrive/app-extensions-sdk";
+import styles from "./App.module.css";
+import AppExtensionsSDK from "@pipedrive/app-extensions-sdk";
+import { useForm } from "react-hook-form"
 
 function App() {
 	useEffect(() => {
@@ -11,22 +9,52 @@ function App() {
 			const sdk = new AppExtensionsSDK();
 
 			await sdk.initialize();
-
-			// try {
-			// 	await sdk.execute(Command.OPEN_MODAL, {
-			// 		type: Modal.CUSTOM_MODAL,
-			// 		action_id: "21c812a2-5e19-4b58-8fbf-25e86818e16a",
-			// 	});
-			// } catch (err) {
-			// 	console.log(err);
-			// }
 		})();
 	}, []);
 
+  const { register, handleSubmit } = useForm()
+  const onSubmit = (data) => alert(JSON.stringify(data))
+
 	return (
-		<>
-			<h1>Hello, world!</h1>
-		</>
+		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <fieldset className={styles.group}>
+        <legend>Client details</legend>
+        <input {...register("firstName")} placeholder="First name" />
+        <input {...register("lastName")} placeholder="Last name" />
+        <input {...register("phone")} placeholder="Phone" type="tel"/>
+        <input {...register("email")} placeholder="Email" type="email"/>
+      </fieldset>
+      <fieldset className={styles.group}>
+        <legend>Job details</legend>
+        <select {...register("jobType")}>
+          <option value="Area">Job type</option>
+        </select>
+        <select {...register("jobSource")}>
+          <option value="Job source">Job source</option>
+        </select>
+        <textarea {...register("jobDescription")} placeholder="Job description"   />
+      </fieldset>
+      <fieldset className={styles.group}>
+        <legend>Service location</legend>
+        <input {...register("address")} placeholder="Address" />
+        <input {...register("city")} placeholder="City" />
+        <input {...register("state")} placeholder="State" />
+        <input {...register("zipCode")} placeholder="Zip code" type="number"/>
+        <select {...register("area")}>
+          <option value="area">Area</option>
+        </select>
+      </fieldset>
+      <fieldset className={styles.group}>
+        <legend>Scheduled</legend>
+        <input {...register("startDate")} placeholder="Start date" type="date" />
+        <input {...register("startTime")} placeholder="Start time" type="time"/>
+        <input {...register("endTime")} placeholder="End time" type="time"/>
+        <select {...register("testSelect")} >
+          <option value="testSelect">Test select</option>
+        </select>
+      </fieldset>
+      <button type="submit">Save job</button>
+    </form>
 	);
 }
 
