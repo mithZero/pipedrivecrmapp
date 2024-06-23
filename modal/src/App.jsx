@@ -8,7 +8,7 @@ function App() {
 		(async () => {
 			const sdk = new AppExtensionsSDK();
 
-			await sdk.initialize();
+			await sdk.initialize({ height: 300, width: 400 });
 		})();
 	}, []);
 
