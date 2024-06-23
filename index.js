@@ -70,6 +70,10 @@ app.get("/", async (req, res) => {
 	}
 });
 
+app.get("/yoyo", (_, res) => {
+	res.sendFile(path.join(__dirname, "public/index.html"));
+})
+
 app.get("/iframe", (_, res) => {
 	res.sendFile(path.join(__dirname, "modal/dist/index.html"));
 });
