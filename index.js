@@ -78,7 +78,8 @@ app.get("/name", () => {
 		// Configure authorization by settings api key
 		// PIPEDRIVE_API_KEY is an environment variable that holds real api key
 		defaultClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
-		
+		apiClient.refreshToken();
+
 		try {
 			console.log('Sending request...');
 			
