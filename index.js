@@ -71,16 +71,16 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/name", async (req, res) => {
-	const refreshPromise = apiClient.refreshToken();
-	refreshPromise.then(
-		() => {
-			console.log("token has been refreshed")
-		},
-		(exception) => {
-			throw new Error(exception);
-			// error occurred, exception will be of type src/exceptions/OAuthProviderException
-		}
-	);
+	// const refreshPromise = apiClient.refreshToken();
+	// refreshPromise.then(
+	// 	() => {
+	// 		console.log("token has been refreshed")
+	// 	},
+	// 	(exception) => {
+	// 		throw new Error(exception);
+	// 		// error occurred, exception will be of type src/exceptions/OAuthProviderException
+	// 	}
+	// );
 
 	// Configure authorization by settings api key
 	// PIPEDRIVE_API_KEY is an environment variable that holds real api key
