@@ -71,58 +71,43 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/name", async (req, res) => {
-	if (
-		req.session.accessToken !== null &&
-		req.session.accessToken !== undefined &&
-		req.session.refreshToken !== undefined
-	) {
-		// token is already set in the session
-		// now make API calls as required
-		// client will automatically refresh the token when it expires and call the token update callback
-		const refreshPromise = apiClient.refreshToken();
-		refreshPromise.then(
-			() => {
-				console.log("token has been refreshed")
-			},
-			(exception) => {
-				throw new Error(exception);
-				// error occurred, exception will be of type src/exceptions/OAuthProviderException
-			}
-		);
-		const api = new pipedrive.DealsApi(apiClient);
-		const deals = await api.getDeals();
-	
-		res.send(deals);
-	} else {
-		const defaultClient = new pipedrive.ApiClient();
-		
-		// Configure authorization by settings api key
-		// PIPEDRIVE_API_KEY is an environment variable that holds real api key
-		defaultClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
-		apiClient.refreshToken();
+	const defaultClient = new pipedrive.ApiClient();
 
-		try {
-			console.log('Sending request...');
-			
-			const DEAL_ID = 1; // An ID of Deal which will be updated
-			const fieldsApi = new pipedrive.DealFieldsApi(defaultClient);
-			const dealsApi = new pipedrive.DealsApi(defaultClient);
-			
-			// Get all Deal fields (keep in mind pagination)
-			const dealFields = await fieldsApi.getDealFields();
-			// Find a field you would like to set a new value to on a Deal
-			const nameField = dealFields.data.find(field => field.name === "name");
-
-			const updatedDeal = await dealsApi.updateDeal(DEAL_ID, {
-				[nameField.key]: 'Joker'
-			});
-
-			console.log('The value of the custom field was updated successfully!', updatedDeal);
-		} catch (err) {
-			const errorToLog = err.context?.body || err;
-			
-			console.log('Updating failed', errorToLog);
+	const refreshPromise = apiClient.refreshToken();
+	refreshPromise.then(
+		() => {
+			console.log("token has been refreshed")
+		},
+		(exception) => {
+			throw new Error(exception);
+			// error occurred, exception will be of type src/exceptions/OAuthProviderException
 		}
+	);
+
+	// Configure authorization by settings api key
+	// PIPEDRIVE_API_KEY is an environment variable that holds real api key
+	defaultClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
+
+	try {
+		console.log('Sending request...');
+		
+		const DEAL_ID = 1; // An ID of Deal which will be updated
+		const fieldsApi = new pipedrive.DealFieldsApi(defaultClient);
+		const dealsApi = new pipedrive.DealsApi(defaultClient);
+		
+		// Get all Deal fields (keep in mind pagination)
+		const dealFields = await fieldsApi.getDealFields();
+		const nameField = dealFields.data.find(field => field.name === "name");
+
+		const updatedDeal = await dealsApi.updateDeal(DEAL_ID, {
+			[nameField.key]: 'Joker'
+		});
+
+		console.log('The value of the custom field was updated successfully!', updatedDeal);
+	} catch (err) {
+		const errorToLog = err.context?.body || err;
+			
+		console.log('Updating failed', errorToLog);
 	}
 })
 
