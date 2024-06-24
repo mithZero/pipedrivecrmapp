@@ -70,9 +70,30 @@ app.get("/", async (req, res) => {
 	}
 });
 
-app.get("/name", () => {
-	(async () => {
-
+app.get("/name", async (req, res) => {
+	if (
+		req.session.accessToken !== null &&
+		req.session.accessToken !== undefined &&
+		req.session.refreshToken !== undefined
+	) {
+		// token is already set in the session
+		// now make API calls as required
+		// client will automatically refresh the token when it expires and call the token update callback
+		const refreshPromise = apiClient.refreshToken();
+		refreshPromise.then(
+			() => {
+				console.log("token has been refreshed")
+			},
+			(exception) => {
+				throw new Error(exception);
+				// error occurred, exception will be of type src/exceptions/OAuthProviderException
+			}
+		);
+		const api = new pipedrive.DealsApi(apiClient);
+		const deals = await api.getDeals();
+	
+		res.send(deals);
+	} else {
 		const defaultClient = new pipedrive.ApiClient();
 		
 		// Configure authorization by settings api key
@@ -102,7 +123,7 @@ app.get("/name", () => {
 			
 			console.log('Updating failed', errorToLog);
 		}
-	})()
+	}
 })
 
 app.get("/yoyo", (_, res) => {
