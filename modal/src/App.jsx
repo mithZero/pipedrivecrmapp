@@ -29,9 +29,9 @@ function App() {
 						body: JSON.stringify(data),
 					}
 				);
-				console.log(res)
+				console.log(res.json())
 			} catch (error) {
-				console.log(error);
+				console.error(error);
 			}
 			if (res.success) setIsSaved(true);
 		})();
