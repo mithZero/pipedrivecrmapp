@@ -18,7 +18,10 @@ function App() {
 	const onSubmit = (data) => {
     fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
 			method: "post",
-			body: JSON.stringify(data)
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
 		});
 		setIsSaved(true);
     // (async () => {
