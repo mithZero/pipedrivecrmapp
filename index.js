@@ -82,7 +82,6 @@ async function addNewCustomDealField(name, field_type) {
 		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
 		const dealFields = await fieldsApi.getDealFields();
 
-		console.log(dealFields.data);
 		if (!dealFields.data.some((field) => field.name === name)) {
 			await fieldsApi.addDealField({
 				name,
@@ -101,15 +100,16 @@ async function updateDealField(fieldName, value) {
 		const DEAL_ID = 1; // An ID of Deal which will be updated
 		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
 		const dealsApi = new pipedrive.DealsApi(apiClient);
-		console.log()
 
 		// Get all Deal fields (keep in mind pagination)
 		const dealFields = await fieldsApi.getDealFields();
 		const nameField = dealFields.data.find((field) => field.name === fieldName);
 
-		await dealsApi.updateDeal(DEAL_ID, {
-			[nameField.key]: value,
-		});
+		if (nameField) {
+			await dealsApi.updateDeal(DEAL_ID, {
+				[nameField.key]: value,
+			});
+		}
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
