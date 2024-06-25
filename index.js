@@ -144,6 +144,7 @@ app.post("/name", async (req, res) => {
 		}
 	} catch (error) {
 		success = false;
+		console.log(error)
 		throw new Error(error);
 	}
 
