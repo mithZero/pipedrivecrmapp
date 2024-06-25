@@ -30,8 +30,12 @@ function App() {
 		// })();
 	};
 
-	if (isSaved) return <a href="#">Saved</a>;
-	
+	if (isSaved) return (
+		<button onClick="window.parent.location = document.referrer">
+			Reload
+		</button>
+	)
+
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			<fieldset className={styles.group}>
