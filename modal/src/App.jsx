@@ -17,17 +17,22 @@ function App() {
 	const { register, handleSubmit, formState } = useForm();
 	const onSubmit = (data) => {
 		(async () => {
-			const res = await fetch(
-				"https://pipedrivecrmapp-production.up.railway.app/name",
-				{
-					method: "post",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(data),
-				}
-			);
-			console.log(res)
+			let res;
+			try {
+				res = await fetch(
+					"https://pipedrivecrmapp-production.up.railway.app/name",
+					{
+						method: "post",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(data),
+					}
+				);
+				console.log(res)
+			} catch (error) {
+				console.log(error);
+			}
 			if (res.success) setIsSaved(true);
 		})();
 	};
