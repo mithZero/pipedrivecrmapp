@@ -115,6 +115,7 @@ async function updateDealField(fieldName, value) {
 }
 
 app.post("/name", async (req, res) => {
+	let success = true;
 	const fields = [
 		"addres",
 		"area",
@@ -134,17 +135,23 @@ app.post("/name", async (req, res) => {
 		"zipCode",
 	];
 	try {
-		for (const field of fields) addNewCustomDealField(field, "text");
+		for (const field of fields) {
+			addNewCustomDealField(field, "text");
+		}
 		
 		for (const [name, value] of Object.entries(JSON.parse(req.body))) {
 			updateDealField(name, value);
 		}
 	} catch (error) {
-		res.status(400).json({message: "Error", succes: false})	
+		success = false;
 		throw new Error(error);
-	} finally {
+	}
+
+	if (success) {
 		res.status(200).json({message: "Success", success: true})	
-	} 
+	} else {
+		res.status(400).json({message: "Error", succes: false})	
+	}
 });
 
 app.get("/yoyo", (_, res) => {
