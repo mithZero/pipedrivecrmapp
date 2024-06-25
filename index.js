@@ -149,7 +149,7 @@ app.post("/name", async (req, res) => {
 		}
 	} catch (error) {
 		success = false;
-		console.log(error)
+		console.log("catch", error)
 	}
 
 	if (success) {
