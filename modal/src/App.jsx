@@ -8,7 +8,7 @@ function App() {
 		(async () => {
 			const sdk = new AppExtensionsSDK();
 
-			await sdk.initialize({ size: { height: 300, width: 800 } });
+			await sdk.initialize({ size: { height: 800, width: 800 } });
 		})();
 		console.log(window)
 	}, []);
@@ -32,9 +32,12 @@ function App() {
 	};
 
 	if (isSaved) return (
-		<button onClick="window.top.location.reload()">
-			Reload
-		</button>
+		<>
+			<button onClick="window.top.location.reload()">
+				Reload
+			</button>
+			<a href="#" target="_top">saved</a>
+		</>
 	)
 
 	return (
