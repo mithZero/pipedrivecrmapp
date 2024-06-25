@@ -5,8 +5,8 @@ const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 require("dotenv").config();
 
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
 	cookieSession({
@@ -84,7 +84,7 @@ async function addNewCustomDealField(name, field_type) {
 		if (!dealFields.data.includes(name)) {
 			await fieldsApi.addDealField({
 				name,
-				field_type
+				field_type,
 			});
 		}
 	} catch (err) {
@@ -115,26 +115,36 @@ async function updateDealField(fieldName, value) {
 }
 
 app.post("/name", async (req, res) => {
-	addNewCustomDealField("addres", "text")
-	addNewCustomDealField("area", "text")
-	addNewCustomDealField("city", "text")
-	addNewCustomDealField("email", "text")
-	addNewCustomDealField("endTime", "text")
-	addNewCustomDealField("firstName", "text")
-	addNewCustomDealField("jobDescription", "text")
-	addNewCustomDealField("jobSource", "text")
-	addNewCustomDealField("jobType", "text")
-	addNewCustomDealField("lastName", "text")
-	addNewCustomDealField("phone", "text")
-	addNewCustomDealField("startDate", "text")
-	addNewCustomDealField("startTime", "text")
-	addNewCustomDealField("state", "text")
-	addNewCustomDealField("testSelect", "text")
-	addNewCustomDealField("zipCode", "text")
-
-	console.log(req.body)
-
-	updateDealField("name", "Haha")
+	const fields = [
+		"addres",
+		"area",
+		"city",
+		"email",
+		"endTime",
+		"firstName",
+		"jobDescription",
+		"jobSource",
+		"jobType",
+		"lastName",
+		"phone",
+		"startDate",
+		"startTime",
+		"state",
+		"testSelect",
+		"zipCode",
+	];
+	try {
+		for (const field of fields) addNewCustomDealField(field, "text");
+		
+		for (const [name, value] of Object.entries(JSON.parse(req.body))) {
+			updateDealField(name, value);
+		}
+	} catch (error) {
+		res.end({message: "Error", succes: false})	
+		throw new Error(error);
+	} finally {
+		res.end({message: "Success", success: true})	
+	} 
 });
 
 app.get("/yoyo", (_, res) => {

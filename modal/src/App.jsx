@@ -17,21 +17,30 @@ function App() {
 	const { register, handleSubmit, formState } = useForm();
 	const onSubmit = (data) => {
 		(async () => {
-			const res = await fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
-				method: "post",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-			});
-	
-			console.log(res)
-	
-			setIsSaved(true);
-		})()
+			const res = await fetch(
+				"https://pipedrivecrmapp-production.up.railway.app/name",
+				{
+					method: "post",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(data),
+				}
+			);
+
+			if (res.success) setIsSaved(true);
+		})();
 	};
 
-	if (isSaved) return <h1>All info saved (reload page) <button onSubmit="(async () => {const sdk = await new AppExtensionsSDK().initialize();await sdk.execute(Command.CLOSE_MODAL);})();">refresh or smth</button></h1>
+	if (isSaved)
+		return (
+			<h1>
+				All info saved (reload page){" "}
+				<button onSubmit="(async () => {const sdk = await new AppExtensionsSDK().initialize();await sdk.execute(Command.CLOSE_MODAL);})();">
+					refresh or smth
+				</button>
+			</h1>
+		);
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -93,7 +102,7 @@ function App() {
 					<option value="testSelect">Test select</option>
 				</select>
 			</fieldset>
-			<button type="submit" disabled={formState.isSubmitting ? true : false}>
+			<button type="submit" disabled={formState.isSubmitting}>
 				Save job
 			</button>
 		</form>
