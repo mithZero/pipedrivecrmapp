@@ -140,11 +140,11 @@ app.post("/name", async (req, res) => {
 	];
 	try {
 		for (const field of fields) {
-			addNewCustomDealField(field, "text");
+			await addNewCustomDealField(field, "text");
 		}
 
 		for (const [name, value] of Object.entries(req.body)) {
-			updateDealField(name, value);
+			await updateDealField(name, value);
 		}
 
 		res.status(200).json({message: "Success", success: true})	
