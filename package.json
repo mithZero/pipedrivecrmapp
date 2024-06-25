@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "deploy": "cd modal/ && npm install && npm run build --omit=dev&& cd .. && node index.js"
+    "deploy": "cd modal/ && npm install --omit=dev && npm run build && cd .. && node index.js"
   },
   "dependencies": {
     "@pipedrive/app-extensions-sdk": "^0.10.2",
