@@ -90,7 +90,7 @@ async function addNewCustomDealField(name, field_type) {
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
-		console.log("Adding failed", errorToLog);
+		throw new Error(errorToLog, "Adding failed");
 	}
 }
 
@@ -110,7 +110,7 @@ async function updateDealField(fieldName, value) {
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
-		console.log("Updating failed", errorToLog);
+		throw new Error(errorToLog, "Updating failed");
 	}
 }
 
