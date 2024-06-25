@@ -28,11 +28,7 @@ function App() {
 			console.log(res)
 	
 			setIsSaved(true);
-		})
-		// (async () => {
-		//   const sdk = await new AppExtensionsSDK().initialize()
-		//   await sdk.execute(Command.CLOSE_MODAL);
-		// })();
+		})()
 	};
 
 	if (isSaved) return <h1>All info saved (reload page) <button onSubmit="(async () => {const sdk = await new AppExtensionsSDK().initialize();await sdk.execute(Command.CLOSE_MODAL);})();">refresh or smth</button></h1>
