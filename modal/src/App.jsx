@@ -32,7 +32,7 @@ function App() {
 	};
 
 	if (isSaved) return (
-		<button onClick="window.parent.location = document.referrer">
+		<button onClick="window.top.location.reload()">
 			Reload
 		</button>
 	)
