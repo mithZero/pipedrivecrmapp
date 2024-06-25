@@ -112,7 +112,7 @@ app.post("/name", async (req, res) => {
 	addNewCustomDealField("testSelectestSelect", "text")
 	addNewCustomDealField("zipCod", "text")
 
-	console.log(JSON.parse(req.body))
+	console.log(req)
 
 	try {
 		console.log("Sending request...");
