@@ -1,15 +1,17 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 require("dotenv").config();
 
 app.use(cookieParser());
-app.use(cookieSession({
-    name: 'session',
-    keys: ['key1']
-}));
+app.use(
+	cookieSession({
+		name: "session",
+		keys: ["key1"],
+	})
+);
 
 const PORT = process.env.PORT || 3000;
 
@@ -29,6 +31,9 @@ app.use(express.static(path.join(__dirname, "modal/dist"), options));
 
 const pipedrive = require("pipedrive");
 const apiClient = new pipedrive.ApiClient();
+// Configure authorization by settings api key
+// PIPEDRIVE_API_KEY is an environment variable that holds real api key
+apiClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
 
 // Configuration parameters and credentials
 let oauth2 = apiClient.authentications.oauth2;
@@ -52,7 +57,7 @@ app.get("/", async (req, res) => {
 		const refreshPromise = apiClient.refreshToken();
 		refreshPromise.then(
 			() => {
-				console.log("token has been refreshed")
+				console.log("token has been refreshed");
 			},
 			(exception) => {
 				throw new Error(exception);
@@ -70,48 +75,74 @@ app.get("/", async (req, res) => {
 	}
 });
 
-app.get("/name", async (req, res) => {
-	// const refreshPromise = apiClient.refreshToken();
-	// refreshPromise.then(
-	// 	() => {
-	// 		console.log("token has been refreshed")
-	// 	},
-	// 	(exception) => {
-	// 		throw new Error(exception);
-	// 		// error occurred, exception will be of type src/exceptions/OAuthProviderException
-	// 	}
-	// );
+async function addNewCustomDealField(name, field_type) {
+	try {
+		console.log("Sending request...");
 
-	// Configure authorization by settings api key
-	// PIPEDRIVE_API_KEY is an environment variable that holds real api key
-	apiClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
+		const api = new pipedrive.DealFieldsApi(apiClient);
+
+		const response = await api.addDealField({
+			name,
+			field_type
+		});
+
+		console.log("Custom field was added successfully!", response);
+	} catch (err) {
+		const errorToLog = err.context?.body || err;
+
+		console.log("Adding failed", errorToLog);
+	}
+}
+
+app.get("/name", async (req, res) => {
+	addNewCustomDealField("addres", "text")
+	addNewCustomDealField("arearea", "text")
+	addNewCustomDealField("cit", "text")
+	addNewCustomDealField("emai", "text")
+	addNewCustomDealField("endTim", "text")
+	addNewCustomDealField("firstNam", "text")
+	addNewCustomDealField("jobDescriptio", "text")
+	addNewCustomDealField("jobSourceob", "text")
+	addNewCustomDealField("jobTypeob", "text")
+	addNewCustomDealField("lastNam", "text")
+	addNewCustomDealField("phon", "text")
+	addNewCustomDealField("startDat", "text")
+	addNewCustomDealField("startTim", "text")
+	addNewCustomDealField("stat", "text")
+	addNewCustomDealField("testSelectestSelect", "text")
+	addNewCustomDealField("zipCod", "text")
+
+	console.log(JSON.parse(req.body))
 
 	try {
-		console.log('Sending request...');
-		
+		console.log("Sending request...");
+
 		const DEAL_ID = 1; // An ID of Deal which will be updated
 		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
 		const dealsApi = new pipedrive.DealsApi(apiClient);
-		
+
 		// Get all Deal fields (keep in mind pagination)
 		const dealFields = await fieldsApi.getDealFields();
-		const nameField = dealFields.data.find(field => field.name === "name");
+		const nameField = dealFields.data.find((field) => field.name === "name");
 
 		const updatedDeal = await dealsApi.updateDeal(DEAL_ID, {
-			[nameField.key]: 'Joker'
+			[nameField.key]: "Joker",
 		});
 
-		console.log('The value of the custom field was updated successfully!', updatedDeal);
+		console.log(
+			"The value of the custom field was updated successfully!",
+			updatedDeal
+		);
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
-			
-		console.log('Updating failed', errorToLog);
+
+		console.log("Updating failed", errorToLog);
 	}
-})
+});
 
 app.get("/yoyo", (_, res) => {
 	res.sendFile(path.join(__dirname, "public/index.html"));
-})
+});
 
 app.get("/iframe", (_, res) => {
 	res.sendFile(path.join(__dirname, "modal/dist/index.html"));
