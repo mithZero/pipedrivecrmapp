@@ -5,7 +5,8 @@ const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 require("dotenv").config();
 
-app.use(express.bodyParser());
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
 app.use(cookieParser());
 app.use(
 	cookieSession({
@@ -78,20 +79,36 @@ app.get("/", async (req, res) => {
 
 async function addNewCustomDealField(name, field_type) {
 	try {
-		console.log("Sending request...");
-
 		const api = new pipedrive.DealFieldsApi(apiClient);
 
-		const response = await api.addDealField({
+		await api.addDealField({
 			name,
 			field_type
 		});
-
-		console.log("Custom field was added successfully!", response);
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
 		console.log("Adding failed", errorToLog);
+	}
+}
+
+async function updateDealField(fieldName, value) {
+	try {
+		const DEAL_ID = 1; // An ID of Deal which will be updated
+		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
+		const dealsApi = new pipedrive.DealsApi(apiClient);
+
+		// Get all Deal fields (keep in mind pagination)
+		const dealFields = await fieldsApi.getDealFields();
+		const nameField = dealFields.data.find((field) => field.name === fieldName);
+
+		await dealsApi.updateDeal(DEAL_ID, {
+			[nameField.key]: value,
+		});
+	} catch (err) {
+		const errorToLog = err.context?.body || err;
+
+		console.log("Updating failed", errorToLog);
 	}
 }
 
@@ -115,30 +132,7 @@ app.post("/name", async (req, res) => {
 
 	console.log(req.body)
 
-	try {
-		console.log("Sending request...");
-
-		const DEAL_ID = 1; // An ID of Deal which will be updated
-		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
-		const dealsApi = new pipedrive.DealsApi(apiClient);
-
-		// Get all Deal fields (keep in mind pagination)
-		const dealFields = await fieldsApi.getDealFields();
-		const nameField = dealFields.data.find((field) => field.name === "name");
-
-		const updatedDeal = await dealsApi.updateDeal(DEAL_ID, {
-			[nameField.key]: "Joker",
-		});
-
-		console.log(
-			"The value of the custom field was updated successfully!",
-			updatedDeal
-		);
-	} catch (err) {
-		const errorToLog = err.context?.body || err;
-
-		console.log("Updating failed", errorToLog);
-	}
+	updateDealField("name", "Haha")
 });
 
 app.get("/yoyo", (_, res) => {
