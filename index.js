@@ -81,7 +81,7 @@ async function addNewCustomDealField(name, field_type) {
 	try {
 		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
 		const dealFields = await fieldsApi.getDealFields();
-		if (!dealFields.data.includes(name)) {
+		if (!dealFields.data.some((field) => field.name === name)) {
 			await fieldsApi.addDealField({
 				name,
 				field_type,
