@@ -113,7 +113,8 @@ async function updateDealField(fieldName, value) {
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
-		throw new Error(errorToLog, "Updating failed");
+		console.log("Updating failed...", errorToLog)
+		throw new Error(errorToLog);
 	}
 }
 
@@ -141,7 +142,7 @@ app.post("/name", async (req, res) => {
 		for (const field of fields) {
 			addNewCustomDealField(field, "text");
 		}
-		console.log("hehehe")
+
 		for (const [name, value] of Object.entries(req.body)) {
 			updateDealField(name, value);
 		}
