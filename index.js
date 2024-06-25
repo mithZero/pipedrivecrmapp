@@ -87,6 +87,7 @@ async function addNewCustomDealField(name, field_type) {
 				field_type,
 			});
 		}
+		console.error(dealFields.data)
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
