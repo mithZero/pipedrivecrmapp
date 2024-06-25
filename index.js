@@ -138,7 +138,8 @@ app.post("/name", async (req, res) => {
 		for (const field of fields) {
 			addNewCustomDealField(field, "text");
 		}
-		
+
+		console.log(req.body, Object.entries(req.body))
 		for (const [name, value] of Object.entries(JSON.parse(req.body))) {
 			updateDealField(name, value);
 		}
