@@ -91,7 +91,8 @@ async function addNewCustomDealField(name, field_type) {
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
-		throw new Error(errorToLog, "Adding failed");
+		console.log("Adding failed", errorToLog)
+		throw new Error(errorToLog);
 	}
 }
 
