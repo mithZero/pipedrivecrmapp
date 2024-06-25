@@ -79,7 +79,7 @@ app.get("/", async (req, res) => {
 
 async function addNewCustomDealField(name, field_type) {
 	try {
-		const api = new pipedrive.DealFieldsApi(apiClient);
+		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
 		const dealFields = await fieldsApi.getDealFields();
 		if (!dealFields.data.includes(name)) {
 			await api.addDealField({
