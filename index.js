@@ -140,10 +140,10 @@ app.post("/name", async (req, res) => {
 			updateDealField(name, value);
 		}
 	} catch (error) {
-		res.send({message: "Error", succes: false})	
+		res.status(400).json({message: "Error", succes: false})	
 		throw new Error(error);
 	} finally {
-		res.send({message: "Success", success: true})	
+		res.status(200).json({message: "Success", success: true})	
 	} 
 });
 
