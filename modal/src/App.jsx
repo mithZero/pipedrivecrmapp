@@ -29,7 +29,8 @@ function App() {
 						body: JSON.stringify(data),
 					}
 				);
-				console.log(res.json())
+				res = await res.json()
+				console.log(res)
 			} catch (error) {
 				console.error(error);
 			}
