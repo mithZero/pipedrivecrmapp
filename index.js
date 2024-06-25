@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 require("dotenv").config();
 
+app.use(express.bodyParser());
 app.use(cookieParser());
 app.use(
 	cookieSession({
@@ -96,23 +97,23 @@ async function addNewCustomDealField(name, field_type) {
 
 app.post("/name", async (req, res) => {
 	addNewCustomDealField("addres", "text")
-	addNewCustomDealField("arearea", "text")
-	addNewCustomDealField("cit", "text")
-	addNewCustomDealField("emai", "text")
-	addNewCustomDealField("endTim", "text")
-	addNewCustomDealField("firstNam", "text")
-	addNewCustomDealField("jobDescriptio", "text")
-	addNewCustomDealField("jobSourceob", "text")
-	addNewCustomDealField("jobTypeob", "text")
-	addNewCustomDealField("lastNam", "text")
-	addNewCustomDealField("phon", "text")
-	addNewCustomDealField("startDat", "text")
-	addNewCustomDealField("startTim", "text")
-	addNewCustomDealField("stat", "text")
-	addNewCustomDealField("testSelectestSelect", "text")
-	addNewCustomDealField("zipCod", "text")
+	addNewCustomDealField("area", "text")
+	addNewCustomDealField("city", "text")
+	addNewCustomDealField("email", "text")
+	addNewCustomDealField("endTime", "text")
+	addNewCustomDealField("firstName", "text")
+	addNewCustomDealField("jobDescription", "text")
+	addNewCustomDealField("jobSource", "text")
+	addNewCustomDealField("jobType", "text")
+	addNewCustomDealField("lastName", "text")
+	addNewCustomDealField("phone", "text")
+	addNewCustomDealField("startDate", "text")
+	addNewCustomDealField("startTime", "text")
+	addNewCustomDealField("state", "text")
+	addNewCustomDealField("testSelect", "text")
+	addNewCustomDealField("zipCode", "text")
 
-	console.log(req)
+	console.log(req.body)
 
 	try {
 		console.log("Sending request...");
