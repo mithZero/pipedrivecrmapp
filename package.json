@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "deploy": "cd modal/ && npm install && npm run build && cd .. && node index.js"
+  },
   "dependencies": {
     "@pipedrive/app-extensions-sdk": "^0.10.2",
     "cookie-parser": "^1.4.6",
