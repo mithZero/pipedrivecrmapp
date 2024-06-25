@@ -120,7 +120,6 @@ async function updateDealField(fieldName, value) {
 }
 
 app.post("/name", async (req, res) => {
-	let success = true;
 	const fields = [
 		"addres",
 		"area",
@@ -147,14 +146,11 @@ app.post("/name", async (req, res) => {
 		for (const [name, value] of Object.entries(req.body)) {
 			updateDealField(name, value);
 		}
+
+		res.status(200).json({message: "Success", success: true})	
 	} catch (error) {
 		success = false;
 		console.log("catch", error)
-	}
-
-	if (success) {
-		res.status(200).json({message: "Success", success: true})	
-	} else {
 		res.status(400).json({message: "Error", succes: false})	
 	}
 });
