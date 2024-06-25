@@ -16,24 +16,26 @@ function App() {
 
 	const { register, handleSubmit, formState } = useForm();
 	const onSubmit = (data) => {
-		const res = fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
-			method: "post",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(data),
-		});
-
-		res.then((data) => console.log(data))
-
-		setIsSaved(true);
+		(async () => {
+			const res = await fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
+				method: "post",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(data),
+			});
+	
+			console.log(res)
+	
+			setIsSaved(true);
+		})
 		// (async () => {
 		//   const sdk = await new AppExtensionsSDK().initialize()
 		//   await sdk.execute(Command.CLOSE_MODAL);
 		// })();
 	};
 
-	if (isSaved) return <h1>All info saved (reload page)</h1>
+	if (isSaved) return <h1>All info saved (reload page) <button onSubmit="(async () => {const sdk = await new AppExtensionsSDK().initialize();await sdk.execute(Command.CLOSE_MODAL);})();">refresh or smth</button></h1>
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
