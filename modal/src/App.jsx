@@ -8,9 +8,9 @@ function App() {
 		(async () => {
 			const sdk = new AppExtensionsSDK();
 
-			await sdk.initialize({ size: { height: 800, width: 800 } });
+			await sdk.initialize({ size: { height: 700, width: 800 } });
 		})();
-		console.log(window)
+		console.log(window.top.location)
 	}, []);
 
 	const [isSaved, setIsSaved] = useState(false);
@@ -36,7 +36,6 @@ function App() {
 			<button onClick="window.top.location.reload()">
 				Reload
 			</button>
-			<a href="#" target="_top">saved</a>
 		</>
 	)
 
