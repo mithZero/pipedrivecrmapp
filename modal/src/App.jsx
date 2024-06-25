@@ -8,22 +8,25 @@ function App() {
 		(async () => {
 			const sdk = new AppExtensionsSDK();
 
-			await sdk.initialize({ size: { height: 700, width: 800 } });
+			await sdk.initialize({ size: { height: 600, width: 800 } });
 		})();
-		console.log(window.top.location)
+		console.log(window.location.ancestorOrigins[0])
 	}, []);
 
 	const [isSaved, setIsSaved] = useState(false);
 
 	const { register, handleSubmit, formState } = useForm();
 	const onSubmit = (data) => {
-		fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
+		const res = fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
 			method: "post",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(data),
 		});
+
+		console.log(res)
+
 		setIsSaved(true);
 		// (async () => {
 		//   const sdk = await new AppExtensionsSDK().initialize()
@@ -31,13 +34,7 @@ function App() {
 		// })();
 	};
 
-	if (isSaved) return (
-		<>
-			<button onClick="window.top.location.reload()">
-				Reload
-			</button>
-		</>
-	)
+	if (isSaved) return <a href={window.location.ancestorOrigins[0]}>All info saved</a>
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
