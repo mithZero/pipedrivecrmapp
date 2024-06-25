@@ -1,11 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
-import AppExtensionsSDK, {Command} from "@pipedrive/app-extensions-sdk";
+import AppExtensionsSDK  from "@pipedrive/app-extensions-sdk";
 import { useForm } from "react-hook-form";
 
 function App() {
 	useEffect(() => {
-    console.log(window.location.search);
 		(async () => {
 			const sdk = new AppExtensionsSDK()
 
@@ -13,19 +12,22 @@ function App() {
 		})();
 	}, []);
 
+	const [isSaved, setIsSaved] = useState(false)
+
 	const { register, handleSubmit, formState } = useForm();
 	const onSubmit = (data) => {
-    console.log(data)
-    fetch("https://pipedrivecrmapp-production.up.railway.app/name");
-
-    (async () => {
-      const sdk = await new AppExtensionsSDK().initialize()
-      await sdk.execute(Command.CLOSE_MODAL);
-    })();
+    fetch("https://pipedrivecrmapp-production.up.railway.app/name", {
+			method: "post",
+			body: JSON.stringify(data)
+		});
+		setIsSaved(true);
+    // (async () => {
+    //   const sdk = await new AppExtensionsSDK().initialize()
+    //   await sdk.execute(Command.CLOSE_MODAL);
+    // })();
   }
-
-	return (
-		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+	if (isSaved) return (
+			<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			<fieldset className={styles.group}>
 				<legend>Client details</legend>
         <div className={styles.two}>
@@ -88,6 +90,7 @@ function App() {
 			</button>
 		</form>
 	);
+	return <a href="#">Saved</a>
 }
 
 export default App;

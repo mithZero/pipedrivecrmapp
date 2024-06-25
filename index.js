@@ -94,7 +94,7 @@ async function addNewCustomDealField(name, field_type) {
 	}
 }
 
-app.get("/name", async (req, res) => {
+app.post("/name", async (req, res) => {
 	addNewCustomDealField("addres", "text")
 	addNewCustomDealField("arearea", "text")
 	addNewCustomDealField("cit", "text")
