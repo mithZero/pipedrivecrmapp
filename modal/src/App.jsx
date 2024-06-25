@@ -10,6 +10,7 @@ function App() {
 
 			await sdk.initialize({ size: { height: 300, width: 800 } });
 		})();
+		console.log(window)
 	}, []);
 
 	const [isSaved, setIsSaved] = useState(false);
