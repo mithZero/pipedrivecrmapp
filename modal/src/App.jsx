@@ -25,7 +25,7 @@ function App() {
 			body: JSON.stringify(data),
 		});
 
-		console.log(res)
+		res.then((data) => console.log(data))
 
 		setIsSaved(true);
 		// (async () => {
@@ -34,7 +34,7 @@ function App() {
 		// })();
 	};
 
-	if (isSaved) return <a href={window.location.ancestorOrigins[0]}>All info saved</a>
+	if (isSaved) return <h1>All info saved (reload page)</h1>
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
