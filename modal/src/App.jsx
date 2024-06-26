@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./App.module.css";
-import AppExtensionsSDK from "@pipedrive/app-extensions-sdk";
+import AppExtensionsSDK, { Command } from "@pipedrive/app-extensions-sdk";
 import { useForm } from "react-hook-form";
 
 function App() {
@@ -14,13 +14,17 @@ function App() {
 
 	const [isSaved, setIsSaved] = useState(false);
 
-	const { register, handleSubmit, formState } = useForm();
+	const {
+		register,
+		handleSubmit,
+		formState: { isSubmitting },
+	} = useForm();
 	const onSubmit = (data) => {
 		(async () => {
 			let res;
 			try {
 				res = await fetch(
-					"https://pipedrivecrmapp-production.up.railway.app/name",
+					"https://pipedrivecrmapp-production.up.railway.app/save",
 					{
 						method: "post",
 						headers: {
@@ -29,11 +33,11 @@ function App() {
 						body: JSON.stringify(data),
 					}
 				);
-				res = await res.json()
-				console.log(res)
+				res = await res.json();
 			} catch (error) {
 				console.error(error);
 			}
+
 			if (res.success) setIsSaved(true);
 		})();
 	};
@@ -41,9 +45,14 @@ function App() {
 	if (isSaved)
 		return (
 			<h1>
-				All info saved (reload page){" "}
-				<button onSubmit="(async () => {const sdk = await new AppExtensionsSDK().initialize();await sdk.execute(Command.CLOSE_MODAL);})();">
-					refresh or smth
+				All info saved{" "}
+				<button
+					onSubmit={async () => {
+						const sdk = await new AppExtensionsSDK().initialize();
+						await sdk.execute(Command.CLOSE_MODAL);
+					}}
+				>
+					Close
 				</button>
 			</h1>
 		);
@@ -108,7 +117,7 @@ function App() {
 					<option value="testSelect">Test select</option>
 				</select>
 			</fieldset>
-			<button type="submit" disabled={formState.isSubmitting}>
+			<button type="submit" disabled={isSubmitting}>
 				Save job
 			</button>
 		</form>

@@ -24,7 +24,7 @@ const options = {
 	index: false,
 	maxAge: "1d",
 	redirect: false,
-	setHeaders(res, path, stat) {
+	setHeaders(res, _path, _stat) {
 		res.set("x-timestamp", Date.now());
 	},
 };
@@ -91,8 +91,8 @@ async function addNewCustomDealField(name, field_type) {
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
-		console.log("Adding failed", errorToLog)
-		throw new Error(errorToLog);
+		console.log("Adding failed", errorToLog);
+		throw new Error("Adding failed");
 	}
 }
 
@@ -114,14 +114,14 @@ async function updateDealField(fieldName, value) {
 	} catch (err) {
 		const errorToLog = err.context?.body || err;
 
-		console.log("Updating failed...", errorToLog)
-		throw new Error(errorToLog);
+		console.log("Updating failed", errorToLog);
+		throw new Error("Updating failed");
 	}
 }
 
-app.post("/name", async (req, res) => {
+app.post("/save", async (req, res) => {
 	const fields = [
-		"addres",
+		"address",
 		"area",
 		"city",
 		"email",
@@ -147,16 +147,12 @@ app.post("/name", async (req, res) => {
 			await updateDealField(name, value);
 		}
 
-		res.status(200).json({message: "Success", success: true})	
+		res.status(200).json({ success: true });
 	} catch (error) {
 		success = false;
-		console.log("catch", error)
-		res.status(400).json({message: "Error", succes: false})	
+		console.log("catch", error);
+		res.status(400).json({ succes: false });
 	}
-});
-
-app.get("/yoyo", (_, res) => {
-	res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.get("/iframe", (_, res) => {
