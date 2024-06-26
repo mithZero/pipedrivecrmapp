@@ -28,20 +28,21 @@ legend {
   background-color: #fff;
   font-weight: bold;
   color: #444;
-
 }
 
 body {
   background-color: #eee;
-  margin: 0;
-  padding: 0 30px;
-  display: flex;
-  place-items: center;
-  justify-content: center;
+  margin: 0 auto;
   min-width: 320px;
   min-height: 100vh;
 }
 
 button {
   padding: 10px;
+}
+
+#root {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
 }
