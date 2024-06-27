@@ -47,12 +47,13 @@ function App() {
 	const [isSaved, setIsSaved] = useState(false);
 
 	const onSubmit = (values) => {
+		const deal_id = new URLSearchParams(location.search).get("selectedIds");
 		return new Promise((resolve) => {
 			(async () => {
 				let res;
 				try {
 					res = await fetch(
-						"https://pipedrivecrmapp-production.up.railway.app/save",
+						`https://pipedrivecrmapp-production.up.railway.app/save?id=${deal_id}`,
 						{
 							method: "post",
 							headers: {
