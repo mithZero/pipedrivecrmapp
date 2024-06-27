@@ -4,6 +4,9 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 require("dotenv").config();
+const api = require("api.js");
+
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -14,8 +17,6 @@ app.use(
 		keys: ["key1"],
 	})
 );
-
-const PORT = process.env.PORT || 3000;
 
 const options = {
 	dotfiles: "ignore",
@@ -28,20 +29,7 @@ const options = {
 		res.set("x-timestamp", Date.now());
 	},
 };
-
 app.use(express.static(path.join(__dirname, "modal/dist"), options));
-
-const pipedrive = require("pipedrive");
-const apiClient = new pipedrive.ApiClient();
-// Configure authorization by settings api key
-// PIPEDRIVE_API_KEY is an environment variable that holds real api key
-apiClient.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
-
-// Configuration parameters and credentials
-let oauth2 = apiClient.authentications.oauth2;
-oauth2.clientId = process.env.CLIENT_ID; // OAuth 2 Client ID
-oauth2.clientSecret = process.env.CLIENT_SECRET; // OAuth 2 Client Secret
-oauth2.redirectUri = process.env.REDIRECT_URI; // OAuth 2 Redirection endpoint or Callback Uri
 
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`);
@@ -53,71 +41,25 @@ app.get("/", async (req, res) => {
 		req.session.accessToken !== undefined &&
 		req.session.refreshToken !== undefined
 	) {
-		// token is already set in the session
-		// now make API calls as required
-		// client will automatically refresh the token when it expires and call the token update callback
-		const refreshPromise = apiClient.refreshToken();
+		const refreshPromise = api.client.refreshToken();
 		refreshPromise.then(
 			() => {
 				console.log("token has been refreshed");
 			},
 			(exception) => {
 				throw new Error(exception);
-				// error occurred, exception will be of type src/exceptions/OAuthProviderException
 			}
 		);
-		const api = new pipedrive.DealsApi(apiClient);
-		const deals = await api.getDeals();
+		const dealsApi = api.pipedrive.DealsApi(apiClient);
+		const deals = await dealsApi.getDeals();
 
 		res.send(deals);
 	} else {
-		const authUrl = apiClient.buildAuthorizationUrl();
+		const authUrl = api.client.buildAuthorizationUrl();
 
 		res.redirect(authUrl);
 	}
 });
-
-async function addNewCustomDealField(name, field_type) {
-	try {
-		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
-		const dealFields = await fieldsApi.getDealFields();
-
-		if (!dealFields.data.some((field) => field.name === name)) {
-			await fieldsApi.addDealField({
-				name,
-				field_type,
-			});
-		}
-	} catch (err) {
-		const errorToLog = err.context?.body || err;
-
-		console.log("Adding failed", errorToLog);
-		throw new Error("Adding failed");
-	}
-}
-
-async function updateDealField(fieldName, value) {
-	try {
-		const DEAL_ID = 1; // An ID of Deal which will be updated
-		const fieldsApi = new pipedrive.DealFieldsApi(apiClient);
-		const dealsApi = new pipedrive.DealsApi(apiClient);
-
-		// Get all Deal fields (keep in mind pagination)
-		const dealFields = await fieldsApi.getDealFields();
-		const nameField = dealFields.data.find((field) => field.name === fieldName);
-
-		if (nameField) {
-			await dealsApi.updateDeal(DEAL_ID, {
-				[nameField.key]: value,
-			});
-		}
-	} catch (err) {
-		const errorToLog = err.context?.body || err;
-
-		console.log("Updating failed", errorToLog);
-		throw new Error("Updating failed");
-	}
-}
 
 app.post("/save", async (req, res) => {
 	const fields = [
@@ -140,11 +82,11 @@ app.post("/save", async (req, res) => {
 	];
 	try {
 		for (const field of fields) {
-			await addNewCustomDealField(field, "text");
+			await api.addNewCustomDealField(field, "text");
 		}
 
 		for (const [name, value] of Object.entries(req.body)) {
-			await updateDealField(name, value);
+			await api.updateDealField(name, value);
 		}
 
 		res.status(200).json({ success: true });
@@ -161,16 +103,15 @@ app.get("/iframe", (_, res) => {
 
 app.get("/callback", (req, res) => {
 	const authCode = req.query.code;
-	const promise = apiClient.authorize(authCode);
+	const promise = api.client.authorize(authCode);
 
 	promise.then(
 		() => {
-			req.session.accessToken = apiClient.authentications.oauth2.accessToken;
+			req.session.accessToken = api.client.authentications.oauth2.accessToken;
 			res.redirect("/");
 		},
 		(exception) => {
 			throw new Error(exception);
-			// error occurred, exception will be of type src/exceptions/OAuthProviderException
 		}
 	);
 });
