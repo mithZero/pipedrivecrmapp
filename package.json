@@ -1,13 +1,13 @@
 {
-  "scripts": {
-    "deploy": "cd modal/ && npm install && npm run build && cd .. && node index.js"
-  },
-  "dependencies": {
-    "@pipedrive/app-extensions-sdk": "^0.10.2",
-    "cookie-parser": "^1.4.6",
-    "cookie-session": "^2.1.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "pipedrive": "^23.0.0"
-  }
+	"scripts": {
+		"deploy": "cd modal/ && npm install && npm run build --omit=dev && cd .. && node index.js"
+	},
+	"dependencies": {
+		"@pipedrive/app-extensions-sdk": "^0.10.2",
+		"cookie-parser": "^1.4.6",
+		"cookie-session": "^2.1.0",
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
+		"pipedrive": "^23.0.0"
+	}
 }

@@ -56,26 +56,29 @@ function App() {
 	const [isSaved, setIsSaved] = useState(false);
 
 	const onSubmit = (values) => {
-		(async () => {
-			let res;
-			try {
-				res = await fetch(
-					"https://pipedrivecrmapp-production.up.railway.app/save",
-					{
-						method: "post",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(values),
-					}
-				);
-				res = await res.json();
-			} catch (error) {
-				console.error(error);
-			}
+		return new Promise((resolve) => {
+			(async () => {
+				let res;
+				try {
+					res = await fetch(
+						"https://pipedrivecrmapp-production.up.railway.app/save",
+						{
+							method: "post",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(values),
+						}
+					);
+					res = await res.json();
+				} catch (error) {
+					console.error(error);
+				}
 
-			if (res.success) setIsSaved(true);
-		})();
+				if (res.success) setIsSaved(true);
+				resolve();
+			})();
+		});
 	};
 
 	const [isLoading, setIsLoading] = useState(false);
