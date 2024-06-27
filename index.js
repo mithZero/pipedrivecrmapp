@@ -4,7 +4,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 require("dotenv").config();
-const api = require("api.js");
+const api = require("./api.js");
 
 const PORT = process.env.PORT || 3000;
 
