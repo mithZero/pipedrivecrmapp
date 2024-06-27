@@ -88,7 +88,7 @@ app.post("/save", async (req, res) => {
 		}
 
 		for (const [name, value] of Object.entries(req.body)) {
-			await api.updateDealField(camelCaseToWords(name), value);
+			await api.updateDealField(camelCaseToWords(name), value, req.query.id);
 		}
 
 		res.status(200).json({ success: true });
@@ -99,9 +99,7 @@ app.post("/save", async (req, res) => {
 	}
 });
 
-app.get("/iframe", (req, res) => {
-	console.log(req);
-	console.log(req.originalUrl);
+app.get("/iframe", (_, res) => {
 	res.sendFile(path.join(__dirname, "modal/dist/index.html"));
 });
 

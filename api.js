@@ -32,9 +32,9 @@ class Api {
 		}
 	}
 
-	async updateDealField(fieldName, value) {
+	async updateDealField(fieldName, value, id) {
 		try {
-			const DEAL_ID = 1; // An ID of Deal which will be updated
+			const DEAL_ID = id; // An ID of Deal which will be updated
 			const fieldsApi = new this.pipedrive.DealFieldsApi(this.client);
 			const dealsApi = new this.pipedrive.DealsApi(this.client);
 
