@@ -4,10 +4,10 @@ class Api {
 		this.client = new this.pipedrive.ApiClient();
 		// Configure authorization by settings api key
 		// PIPEDRIVE_API_KEY is an environment variable that holds real api key
-		client.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
+		this.client.authentications.api_key.apiKey = process.env.PIPEDRIVE_API_KEY;
 
 		// Configuration parameters and credentials
-		let oauth2 = client.authentications.oauth2;
+		let oauth2 = this.client.authentications.oauth2;
 		oauth2.clientId = process.env.CLIENT_ID; // OAuth 2 Client ID
 		oauth2.clientSecret = process.env.CLIENT_SECRET; // OAuth 2 Client Secret
 		oauth2.redirectUri = process.env.REDIRECT_URI; // OAuth 2 Redirection endpoint or Callback Uri
@@ -15,7 +15,7 @@ class Api {
 
 	async addNewCustomDealField(name, field_type) {
 		try {
-			const fieldsApi = new this.pipedrive.DealFieldsApi(client);
+			const fieldsApi = new this.pipedrive.DealFieldsApi(this.client);
 			const dealFields = await fieldsApi.getDealFields();
 
 			if (!dealFields.data.some((field) => field.name === name)) {
@@ -35,8 +35,8 @@ class Api {
 	async updateDealField(fieldName, value) {
 		try {
 			const DEAL_ID = 1; // An ID of Deal which will be updated
-			const fieldsApi = new this.pipedrive.DealFieldsApi(client);
-			const dealsApi = new this.pipedrive.DealsApi(client);
+			const fieldsApi = new this.pipedrive.DealFieldsApi(this.client);
+			const dealsApi = new this.pipedrive.DealsApi(this.client);
 
 			// Get all Deal fields (keep in mind pagination)
 			const dealFields = await fieldsApi.getDealFields();
