@@ -99,7 +99,8 @@ app.post("/save", async (req, res) => {
 	}
 });
 
-app.get("/iframe", (_, res) => {
+app.get("/iframe", (req, res) => {
+	console.log(req.url);
 	res.sendFile(path.join(__dirname, "modal/dist/index.html"));
 });
 
