@@ -100,7 +100,7 @@ app.post("/save", async (req, res) => {
 });
 
 app.get("/iframe", (req, res) => {
-	console.log(req.get("origin"));
+	res.append(JSON.stringify(req));
 	res.sendFile(path.join(__dirname, "modal/dist/index.html"));
 });
 
