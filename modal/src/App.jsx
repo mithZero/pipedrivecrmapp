@@ -202,6 +202,7 @@ function App() {
 										label="Job description"
 										multiline
 										rows={4}
+										{...register("jobDescription")}
 									/>
 								</Stack>
 							</Group>
@@ -212,9 +213,9 @@ function App() {
 									<Typography variant="h5">Service location</Typography>
 									<TextField
 										size="small"
-										id="location"
-										label="Location"
-										{...register("location")}
+										id="address"
+										label="Address"
+										{...register("address")}
 									/>
 									<TextField
 										size="small"
