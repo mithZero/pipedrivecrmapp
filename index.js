@@ -88,7 +88,11 @@ app.post("/save", async (req, res) => {
 		}
 
 		for (const [name, value] of Object.entries(req.body)) {
-			await api.updateDealField(camelCaseToWords(name), value, req.query.id);
+			await api.updateDealField(
+				camelCaseToWords(name),
+				value,
+				req.query.selectedIds
+			);
 		}
 
 		res.status(200).json({ success: true });
