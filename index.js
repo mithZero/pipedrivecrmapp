@@ -6,6 +6,8 @@ const cookieSession = require("cookie-session");
 require("dotenv").config();
 const api = require("./api.js");
 
+const { camelCaseToWords } = require("./helpers.js");
+
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -82,11 +84,11 @@ app.post("/save", async (req, res) => {
 	];
 	try {
 		for (const field of fields) {
-			await api.addNewCustomDealField(field, "text");
+			await api.addNewCustomDealField(camelCaseToWords(field), "text");
 		}
 
 		for (const [name, value] of Object.entries(req.body)) {
-			await api.updateDealField(name, value);
+			await api.updateDealField(camelCaseToWords(name), value);
 		}
 
 		res.status(200).json({ success: true });

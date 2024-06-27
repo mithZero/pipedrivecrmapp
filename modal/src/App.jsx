@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import AppExtensionsSDK, { Command } from "@pipedrive/app-extensions-sdk";
 import { useForm, Controller } from "react-hook-form";
-import { styled } from "@mui/material/styles";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LoadingButton } from "@mui/lab";
+import Group from "../components/Group";
 import {
 	Grid,
 	Container,
 	CssBaseline,
 	Stack,
 	TextField,
-	Paper,
 	FormControl,
 	Select,
 	InputLabel,
@@ -20,19 +19,11 @@ import {
 	Box,
 } from "@mui/material";
 
-const Group = styled(Paper)(({ theme }) => ({
-	height: "100%",
-	backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-	...theme.typography.body2,
-	padding: theme.spacing(3),
-	color: theme.palette.text.primary,
-}));
-
 function App() {
 	useEffect(() => {
 		(async () => {
 			const sdk = new AppExtensionsSDK();
-			await sdk.initialize({ size: { height: 600, width: 800 } });
+			await sdk.initialize({ size: { height: 600, width: 900 } });
 		})();
 	}, []);
 
@@ -235,7 +226,7 @@ function App() {
 											fullWidth
 											id="zipcode"
 											label="Zip code"
-											{...register("zipcode")}
+											{...register("zipCode")}
 										/>
 										<FormControl fullWidth size="small">
 											<InputLabel id="areaLabel">Area</InputLabel>
